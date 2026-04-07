@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ItalMart — Il Tuo Mercato Online</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3d;
+    --accent: #c8a84b;
+    --accent2: #e8c96a;
+    --red: #e84545;
+    --green: #3ecf8e;
+    --text: #f0f0f5;
+    --muted: #8888aa;
+    --card: #16162050;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  .header-top {
+    display: flex; align-items: center; gap: 1.5rem;
+    height: 70px;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -1px;
+    white-space: nowrap;
+  }
+  .logo span { color: var(--text); }
+  .search-bar {
+    flex: 1; max-width: 600px;
+    display: flex; align-items: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  .search-bar input {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; padding: 0.7rem 1rem;
+  }
+  .search-bar input::placeholder { color: var(--muted); }
+  .search-bar button {
+    background: var(--accent); border: none; cursor: pointer;
+    padding: 0.7rem 1.2rem; color: #000; font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .header-actions { display: flex; gap: 1rem; align-items: center; margin-left: auto; }
+  .hbtn {
+    background: none; border: 1px solid var(--border);
+    color: var(--text); padding: 0.5rem 1rem;
+    border-radius: 8px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .hbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .cart-btn {
+    background: var(--accent); border: none; color: #000;
+    padding: 0.5rem 1.2rem; border-radius: 8px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .cart-count {
+    background: #000; color: var(--accent);
+    border-radius: 50%; width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700;
+  }
+  nav {
+    border-top: 1px solid var(--border);
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-item {
+    padding: 0.7rem 1.1rem; cursor: pointer;
+    font-size: 0.82rem; white-space: nowrap; color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s; font-weight: 500;
+  }
+  .nav-item:hover, .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0d0d18 0%, #1a1030 50%, #0d0d18 100%);
+    padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,168,75,0.12) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.3); color: var(--accent);
+    padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900; line-height: 1.1; margin-bottom: 1rem;
+  }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p { color: var(--muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto 2rem; }
+  .hero-stats {
+    display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border);
+  }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* PROMO BANNER */
+  .promo-bar {
+    background: linear-gradient(90deg, var(--red) 0%, #c73030 100%);
+    padding: 0.6rem 2rem; text-align: center;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;
+  }
+  .promo-bar span { opacity: 0.7; margin: 0 1rem; }
+
+  /* CATEGORIES */
+  .section { padding: 2.5rem 2rem; }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; }
+  .see-all { color: var(--accent); font-size: 0.85rem; cursor: pointer; font-weight: 500; }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.8rem;
+  }
+  .cat-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.2rem 0.8rem; text-align: center;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .cat-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .cat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .cat-name { font-size: 0.78rem; font-weight: 600; color: var(--text); }
+  .cat-count { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* PRODUCTS GRID */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.2rem;
+  }
+  .product-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; cursor: pointer;
+    transition: all 0.25s; position: relative;
+  }
+  .product-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(200,168,75,0.12); }
+  .product-img {
+    width: 100%; aspect-ratio: 1.1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+    position: relative;
+  }
+  .badge {
+    position: absolute; top: 10px; left: 10px;
+    padding: 0.25rem 0.6rem; border-radius: 6px;
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  }
+  .badge-sale { background: var(--red); color: #fff; }
+  .badge-new { background: var(--green); color: #000; }
+  .badge-hot { background: var(--accent); color: #000; }
+  .product-info { padding: 1rem; }
+  .product-category { font-size: 0.7rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .product-name { font-size: 0.9rem; font-weight: 600; margin: 0.3rem 0; line-height: 1.3; }
+  .product-rating { display: flex; align-items: center; gap: 0.3rem; margin: 0.3rem 0; }
+  .stars { color: var(--accent); font-size: 0.8rem; }
+  .rating-count { font-size: 0.72rem; color: var(--muted); }
+  .product-price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 0.8rem; }
+  .price { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+  .price-old { font-size: 0.8rem; color: var(--muted); text-decoration: line-through; }
+  .add-btn {
+    background: var(--accent); border: none; color: #000;
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+    font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; transition: all 0.2s;
+  }
+  .add-btn:hover { background: var(--accent2); transform: scale(1.1); }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .filter-btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); padding: 0.4rem 1rem; border-radius: 50px;
+    cursor: pointer; font-size: 0.8rem; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s; font-weight: 500;
+  }
+  .filter-btn:hover, .filter-btn.active { background: rgba(200,168,75,0.15); border-color: var(--accent); color: var(--accent); }
+
+  /* PAYMENT SECTION */
+  .payment-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; margin: 2rem;
+  }
+  .payment-methods { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+  .pay-method {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.8rem 1.5rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .pay-method:hover { border-color: var(--accent); }
+  .pay-icon { font-size: 1.4rem; }
+
+  /* CART MODAL */
+  .cart-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7); z-index: 200; backdrop-filter: blur(4px);
+  }
+  .cart-overlay.open { display: flex; justify-content: flex-end; }
+  .cart-panel {
+    background: var(--surface); width: 420px; max-width: 100%;
+    height: 100%; overflow-y: auto; padding: 2rem;
+    border-left: 1px solid var(--border);
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+  .cart-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; }
+  .close-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.5rem; }
+  .cart-item {
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+  }
+  .cart-item-img { font-size: 2.5rem; width: 60px; text-align: center; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .cart-item-price { color: var(--accent); font-weight: 600; }
+  .qty-ctrl { display: flex; align-items: center; gap: 0.5rem; }
+  .qty-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+  .cart-total {
+    display: flex; justify-content: space-between;
+    padding: 1.5rem 0; font-size: 1.1rem; font-weight: 700;
+  }
+  .checkout-btn {
+    width: 100%; background: var(--accent); border: none; color: #000;
+    padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 700;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .checkout-btn:hover { background: var(--accent2); }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface); border-top: 1px solid var(--border);
+    padding: 3rem 2rem 2rem; margin-top: 3rem;
+  }
+  .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; }
+  .footer-col h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 1rem; color: var(--accent); }
+  .footer-col a { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; cursor: pointer; text-decoration: none; }
+  .footer-col a:hover { color: var(--text); }
+  .footer-bottom {
+    border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 1.5rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
+    font-size: 0.8rem; color: var(--muted);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 300;
+    background: var(--green); color: #000; padding: 0.8rem 1.5rem;
+    border-radius: 10px; font-weight: 600; font-size: 0.9rem;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.3s; pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .euro-badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: rgba(200,168,75,0.1); border: 1px solid rgba(200,168,75,0.3);
+    color: var(--accent); padding: 0.2rem 0.7rem; border-radius: 6px;
+    font-size: 0.78rem; font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .hero-stats { gap: 1.5rem; }
+    .header-top { gap: 0.8rem; }
+    .logo { font-size: 1.3rem; }
+    .cart-panel { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="promo-bar">
+  🚀 SPEDIZIONE GRATUITA sugli ordini oltre €49 <span>|</span> ✨ FINO AL 70% DI SCONTO <span>|</span> 🔒 Pagamento Sicuro SSL
+</div>
+
+<header>
+  <div class="header-top">
+    <div class="logo">Ital<span>Mart</span></div>
+    <div class="search-bar">
+      <input type="text" placeholder="Cerca tra 1.500+ prodotti..." id="searchInput" oninput="handleSearch()">
+      <button onclick="handleSearch()">🔍 Cerca</button>
+    </div>
+    <div class="header-actions">
+      <span class="euro-badge">€ EUR</span>
+      <button class="hbtn">❤️ Preferiti</button>
+      <button class="cart-btn" onclick="openCart()">
+        🛒 Carrello <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+  <nav id="categoryNav"></nav>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">🇮🇹 Il Mercato Online Italiano #1</div>
+  <h1>Tutto ciò che<br>desideri, a<br><em>prezzi incredibili</em></h1>
+  <p>Oltre 1.500 prodotti in 100+ categorie. Pagamento sicuro in Euro. Consegna rapida in tutta Italia.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">1.500+</div><div class="stat-label">Prodotti</div></div>
+    <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Categorie</div></div>
+    <div class="stat"><div class="stat-num">4.8★</div><div class="stat-label">Valutazione</div></div>
+    <div class="stat"><div class="stat-num">250K+</div><div class="stat-label">Clienti</div></div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">100+ Categorie</h2>
+    <span class="see-all" onclick="showAllCategories()">Vedi tutte →</span>
+  </div>
+  <div class="categories-grid" id="categoriesGrid"></div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Prodotti in Evidenza</h2>
+    <span class="see-all" onclick="showAllProducts()">Vedi tutti →</span>
+  </div>
+  <div class="filter-bar" id="filterBar"></div>
+  <div class="products-grid" id="productsGrid"></div>
+  <div style="text-align:center;margin-top:2rem;">
+    <button class="checkout-btn" style="width:auto;padding:0.9rem 3rem;" onclick="loadMoreProducts()">Carica altri prodotti ▼</button>
+  </div>
+</section>
+
+<!-- PAYMENT METHODS -->
+<div class="payment-section">
+  <div class="section-header">
+    <h2 class="section-title">💳 Pagamento Sicuro in Euro</h2>
+  </div>
+  <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Tutti i prezzi in <strong style="color:var(--accent)">€ Euro (EUR)</strong>. Transazioni crittografate SSL 256-bit.</p>
+  <div class="payment-methods">
+    <div class="pay-method"><span class="pay-icon">💳</span> Visa / Mastercard</div>
+    <div class="pay-method"><span class="pay-icon">🔵</span> PayPal</div>
+    <div class="pay-method"><span class="pay-icon">🍎</span> Apple Pay</div>
+    <div class="pay-method"><span class="pay-icon">🟢</span> Google Pay</div>
+    <div class="pay-method"><span class="pay-icon">🏦</span> Bonifico Bancario</div>
+    <div class="pay-method"><span class="pay-icon">💰</span> Klarna (Rate)</div>
+    <div class="pay-method"><span class="pay-icon">🌐</span> Satispay</div>
+    <div class="pay-method"><span class="pay-icon">📦</span> Contrassegno</div>
+  </div>
+</div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOutside(event)">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <span class="cart-title">🛒 Il Tuo Carrello</span>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div id="cartItems">
+      <p style="color:var(--muted);text-align:center;padding:3rem 0;">Il carrello è vuoto.<br>Aggiungi qualcosa! 🛍️</p>
+    </div>
+    <div class="cart-total" id="cartTotal" style="display:none">
+      <span>Totale</span><span id="totalPrice" style="color:var(--accent)">€0,00</span>
+    </div>
+    <div style="margin-bottom:1rem;font-size:0.8rem;color:var(--muted);text-align:center" id="cartNote" style="display:none">
+      🚚 Spedizione gratuita inclusa! &nbsp; 🔒 Checkout sicuro SSL
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" style="display:none">
+      Procedi al Pagamento in € Euro →
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>ItalMart</h4>
+      <a>Chi siamo</a><a>Carriere</a><a>Stampa</a><a>Blog</a><a>Affiliati</a>
+    </div>
+    <div class="footer-col">
+      <h4>Servizio Clienti</h4>
+      <a>Centro assistenza</a><a>Resi e rimborsi</a><a>Traccia ordine</a><a>FAQ</a><a>Contattaci</a>
+    </div>
+    <div class="footer-col">
+      <h4>Pagamenti</h4>
+      <a>Metodi accettati</a><a>Sicurezza pagamenti</a><a>Fatturazione</a><a>Valuta (€ EUR)</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legale</h4>
+      <a>Privacy Policy</a><a>Termini di servizio</a><a>Cookie Policy</a><a>GDPR</a>
+    </div>
+    <div class="footer-col">
+      <h4>Seguici</h4>
+      <a>📘 Facebook</a><a>📸 Instagram</a><a>🐦 Twitter/X</a><a>▶️ YouTube</a><a>💬 TikTok</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ItalMart S.r.l. — P.IVA IT12345678901 — Milano, Italia</span>
+    <span>Tutti i prezzi includono IVA (22%) • Valuta: € Euro (EUR)</span>
+  </div>
+</footer>
+
+<script>
+// ==============================
+// DATA
+// ==============================
+const categories = [
+  {icon:'📱',name:'Smartphone',count:48},{icon:'💻',name:'Laptop',count:62},{icon:'🎧',name:'Audio',count:55},
+  {icon:'📺',name:'TV & Display',count:33},{icon:'🎮',name:'Gaming',count:77},{icon:'📷',name:'Fotografia',count:41},
+  {icon:'⌚',name:'Smartwatch',count:29},{icon:'🖨️',name:'Stampanti',count:22},{icon:'🔌',name:'Accessori',count:120},
+  {icon:'👕',name:'Abbigliamento',count:210},{icon:'👟',name:'Scarpe',count:95},{icon:'👜',name:'Borse',count:68},
+  {icon:'💄',name:'Bellezza',count:143},{icon:'🧴',name:'Cura Persona',count:88},{icon:'💊',name:'Salute',count:56},
+  {icon:'🍝',name:'Alimentari',count:175},{icon:'🍷',name:'Vini & Spirits',count:67},{icon:'☕',name:'Caffè',count:39},
+  {icon:'🪑',name:'Arredamento',count:112},{icon:'🛋️',name:'Divani',count:24},{icon:'🛏️',name:'Camera da Letto',count:45},
+  {icon:'🧹',name:'Pulizie',count:83},{icon:'🍳',name:'Cucina',count:97},{icon:'🏡',name:'Giardino',count:64},
+  {icon:'🔧',name:'Bricolage',count:88},{icon:'🚗',name:'Auto',count:53},{icon:'🏍️',name:'Moto',count:31},
+  {icon:'🚲',name:'Biciclette',count:27},{icon:'⚽',name:'Sport',count:119},{icon:'🎽',name:'Fitness',count:76},
+  {icon:'🏊',name:'Nuoto',count:22},{icon:'🎾',name:'Tennis',count:18},{icon:'📚',name:'Libri',count:234},
+  {icon:'🎨',name:'Arte',count:49},{icon:'🎵',name:'Musica',count:62},{icon:'🎸',name:'Strumenti',count:44},
+  {icon:'🧸',name:'Giocattoli',count:98},{icon:'👶',name:'Neonati',count:77},{icon:'🐕',name:'Animali',count:89},
+  {icon:'🌱',name:'Piante',count:54},{icon:'✈️',name:'Viaggi',count:33},{icon:'🎒',name:'Zaini',count:41},
+  {icon:'🕶️',name:'Occhiali',count:38},{icon:'💍',name:'Gioielli',count:72},{icon:'🧣',name:'Moda Inverno',count:55},
+  {icon:'👒',name:'Accessori Moda',count:64},{icon:'📦',name:'Ufficio',count:91},{icon:'🖊️',name:'Cancelleria',count:67},
+  {icon:'🧪',name:'Laboratorio',count:28},{icon:'🔬',name:'Ottica',count:19},{icon:'🌿',name:'Bio & Eco',count:83},
+  {icon:'🎁',name:'Regali',count:100},{icon:'🎪',name:'Feste',count:45},{icon:'🍬',name:'Dolci',count:88},
+  {icon:'🥗',name:'Dietetica',count:56},{icon:'🧘',name:'Yoga',count:34},{icon:'🏋️',name:'Palestra',count:48},
+  {icon:'🌊',name:'Mare',count:37},{icon:'⛷️',name:'Sci',count:21},{icon:'🎣',name:'Pesca',count:29},
+  {icon:'🔦',name:'Illuminazione',count:66},{icon:'🔋',name:'Batterie',count:44},{icon:'🖥️',name:'Desktop PC',count:18},
+  {icon:'🗄️',name:'Storage',count:35},{icon:'🛡️',name:'Sicurezza',count:41},{icon:'📡',name:'Reti',count:27},
+  {icon:'🧰',name:'Ferramenta',count:73},{icon:'🪚',name:'Utensili',count:55},{icon:'🎓',name:'Educazione',count:48},
+  {icon:'🏠',name:'Smart Home',count:59},{icon:'🚿',name:'Bagno',count:62},{icon:'🧺',name:'Lavanderia',count:33},
+  {icon:'🌡️',name:'Climatizzatori',count:19},{icon:'🫖',name:'Tè & Infusi',count:44},{icon:'🥩',name:'Gastronomia',count:66},
+  {icon:'🌸',name:'Profumi',count:53},{icon:'💅',name:'Unghie',count:38},{icon:'✂️',name:'Capelli',count:47},
+  {icon:'🧲',name:'Elettronica',count:88},{icon:'📻',name:'Radio',count:14},{icon:'🎞️',name:'Film',count:72},
+  {icon:'🕹️',name:'Videogiochi',count:134},{icon:'🃏',name:'Giochi da tavolo',count:58},{icon:'🔭',name:'Astronomia',count:17},
+  {icon:'🗺️',name:'Outdoor',count:65},{icon:'⛺',name:'Campeggio',count:44},{icon:'🏄',name:'Surf',count:16},
+  {icon:'🧗',name:'Arrampicata',count:23},{icon:'🥋',name:'Arti Marziali',count:31},{icon:'🛺',name:'Monopattini',count:22},
+  {icon:'🎯',name:'Tiro',count:18},{icon:'🏇',name:'Equitazione',count:12},{icon:'🤿',name:'Subacquea',count:19},
+  {icon:'🧩',name:'Puzzle',count:43},{icon:'🔐',name:'Serrature',count:27},{icon:'🌎',name:'Import',count:88},
+];
+
+const productTemplates = [
+  // Electronics
+  {cat:'Smartphone',icon:'📱',names:['iPhone 15 Pro Max','Samsung Galaxy S24 Ultra','Xiaomi 14 Pro','Google Pixel 8','OnePlus 12','Sony Xperia 1 VI','OPPO Find X7','Motorola Edge 50'],minP:299,maxP:1499,badge:'hot'},
+  {cat:'Laptop',icon:'💻',names:['MacBook Pro 14"','Dell XPS 15','ThinkPad X1 Carbon','ASUS ZenBook 14','HP Spectre x360','Acer Swift 5','MSI Creator Z16','Surface Pro 9'],minP:699,maxP:2499,badge:'new'},
+  {cat:'Audio',icon:'🎧',names:['Sony WH-1000XM5','AirPods Pro 2','Bose QC45','JBL Flip 6','Marshall Emberton II','Sennheiser Momentum','Jabra Evolve2','B&O Beoplay'],minP:39,maxP:399,badge:'sale'},
+  {cat:'TV & Display',icon:'📺',names:['Samsung QLED 65"','LG OLED 55"','Sony Bravia 77"','Philips Ambilight 50"','TCL Mini-LED 75"','Hisense ULED 65"'],minP:399,maxP:3499,badge:'hot'},
+  {cat:'Gaming',icon:'🎮',names:['PlayStation 5','Xbox Series X','Nintendo Switch OLED','Steam Deck','PS5 DualSense','Xbox Elite Controller','Gaming Chair Pro','HyperX Keyboard'],minP:49,maxP:699,badge:'hot'},
+  {cat:'Fotografia',icon:'📷',names:['Sony Alpha A7 IV','Canon EOS R6','Nikon Z6 III','Fujifilm X-T5','GoPro Hero 12','DJI Osmo Pocket 3','Insta360 X4','Ricoh GR IIIx'],minP:299,maxP:2999,badge:'new'},
+  {cat:'Smartwatch',icon:'⌚',names:['Apple Watch Series 9','Samsung Galaxy Watch 6','Garmin Fenix 7','Fitbit Versa 4','Polar Ignite 3','Amazfit GTR 4'],minP:79,maxP:799,badge:'sale'},
+
+  // Fashion
+  {cat:'Abbigliamento',icon:'👕',names:['Felpa Premium Unisex','Giacca Invernale Elegante','T-Shirt Organica','Jeans Slim Fit','Camicia Oxford','Abito da Sera','Piumino Leggero','Maglione Cachemire'],minP:19,maxP:299,badge:'sale'},
+  {cat:'Scarpe',icon:'👟',names:['Nike Air Max 270','Adidas Ultraboost 23','Timberland 6-inch','Converse Chuck 70','New Balance 990','Vans Old Skool','Dr. Martens 1460','Birkenstock Arizona'],minP:59,maxP:299,badge:'hot'},
+  {cat:'Borse',icon:'👜',names:['Borsa a Tracolla Pelle','Zaino Laptop Premium','Pochette Elegante','Borsa Shopping','Trolley Viaggio','Marsupio Outdoor','Clutch Sera','Cartella Ufficio'],minP:29,maxP:499,badge:'new'},
+
+  // Beauty
+  {cat:'Bellezza',icon:'💄',names:['Fondotinta HD Pro','Palette Ombretti 24','Rossetto Matte Premium','Mascara Volume XXL','Siero Anti-età','Crema Viso SPF50','Profumo Eau de Parfum','Matita Occhi Waterproof'],minP:9,maxP:149,badge:'sale'},
+  {cat:'Cura Persona',icon:'🧴',names:['Crema Corpo Idratante','Shampoo Bio Nutriente','Gel Doccia Premium','Lozione Doposole','Dentifricio Sbiancante','Deodorante 48h','Olio Corpo Argan','Maschera Capelli'],minP:4,maxP:59,badge:'new'},
+
+  // Food
+  {cat:'Alimentari',icon:'🍝',names:['Pasta Artigianale Set 6','Olio EVO DOP 750ml','Pomodori Pelati BIO x6','Parmigiano 24 mesi 1kg','Prosciutto Crudo DOP','Bresaola Valtellinese','Pecorino Romano 500g','Tartufo Nero 50g'],minP:4,maxP:89,badge:'hot'},
+  {cat:'Vini & Spirits',icon:'🍷',names:['Barolo DOCG 2019','Brunello di Montalcino','Prosecco Valdobbiadene','Amarone della Valpolicella','Chianti Classico DOCG','Limoncello Artigianale','Grappa di Barolo','Amaro Nonino'],minP:14,maxP:189,badge:'hot'},
+
+  // Home
+  {cat:'Arredamento',icon:'🪑',names:['Libreria Modulare Oak','Scrivania Ergonomica','Sedia Ufficio Premium','Lampada da Terra LED','Tappeto Berbero 200x300','Specchio Decorativo','Scaffalatura Industriale','Comodino Legno Massello'],minP:49,maxP:999,badge:'new'},
+  {cat:'Cucina',icon:'🍳',names:['Set Coltelli Chef 5pz','Pentola Acciaio Inox 24cm','Mixer Professionale','Macchina Caffè Espresso','Friggitrice ad Aria XL','Tagliere Legno Olivo','Set Barattoli Vetro','Wok Antiaderente 30cm'],minP:19,maxP:499,badge:'sale'},
+
+  // Sports
+  {cat:'Sport',icon:'⚽',names:['Pallone Calcio FIFA','Racchetta Tennis Wilson','Tapis Roulant Pieghevole','Manubri Regolabili','Casco Bici MTB','Kayak Gonfiabile','Borsa Sportiva','Scarpe Trail Running'],minP:19,maxP:1299,badge:'hot'},
+  {cat:'Fitness',icon:'🎽',names:['Tappetino Yoga Premium','Elastici Resistenza Set','Kettlebell 16kg','Corda Salto Speed','Fascia Cardio Smart','Bilanciere Olimpico','Panca Pieghevole','Roller Schiuma'],minP:9,maxP:699,badge:'sale'},
+
+  // Books & Culture
+  {cat:'Libri',icon:'📚',names:['Il Nome della Rosa','Tre metri sopra il cielo','La solitudine dei numeri primi','Novecento (Baricco)','1984 (Orwell) IT','Harry Potter Box Set','Dizionario Italiano Completo','Enciclopedia Universale'],minP:7,maxP:89,badge:'new'},
+
+  // Toys
+  {cat:'Giocattoli',icon:'🧸',names:['LEGO Technic 42154','Playmobil Castello','Barbie Dreamhouse','Hot Wheels Pista','Puzzle 3D Colosseo','Remote Car 4x4','Drone Mini Principianti','Action Figure Marvel'],minP:12,maxP:299,badge:'hot'},
+
+  // Pets
+  {cat:'Animali',icon:'🐕',names:['Crocchette Premium Cane 10kg','Cuccia Ortopedica','Gabbia Pappagallo XL','Guinzaglio Retrattile','Giochi Interattivi Gatto','Acquario 60L Kit','Sabbia Gatto Clumping','Vitamina Cane/Gatto'],minP:8,maxP:299,badge:'sale'},
+
+  // Automotive
+  {cat:'Auto',icon:'🚗',names:['Navigatore GPS Tomtom','Dashcam 4K Ultra','Coprisedili Premium','Gommini Tappetini','Compressore Portatile','Lucido Carrozzeria Pro','Caricatore USB Car','Catene da Neve'],minP:14,maxP:399,badge:'new'},
+];
+
+let cart = [];
+let displayedProducts = [];
+let page = 0;
+const PRODUCTS_PER_PAGE = 40;
+
+function generateProducts() {
+  const all = [];
+  const badges = ['sale','new','hot',null,null,null];
+  let id = 1;
+  productTemplates.forEach(t => {
+    t.names.forEach(name => {
+      const price = +(Math.random()*(t.maxP-t.minP)+t.minP).toFixed(2);
+      const discount = Math.random() > 0.5 ? +(price * (1 + Math.random()*0.5)).toFixed(2) : null;
+      const rating = (3.5 + Math.random()*1.5).toFixed(1);
+      const reviews = Math.floor(Math.random()*2000+50);
+      all.push({ id: id++, name, cat: t.cat, icon: t.icon, price, oldPrice: discount, badge: badges[Math.floor(Math.random()*badges.length)] || t.badge, rating, reviews });
+    });
+  });
+  // Fill up to 1500
+  while(all.length < 1500) {
+    const t = productTemplates[all.length % productTemplates.length];
+    const price = +(Math.random()*(t.maxP-t.minP)+t.minP).toFixed(2);
+    const discount = Math.random() > 0.6 ? +(price*(1+Math.random()*0.4)).toFixed(2) : null;
+    all.push({
+      id: id++,
+      name: t.names[all.length % t.names.length] + ' ' + (all.length+1),
+      cat: t.cat, icon: t.icon, price, oldPrice: discount,
+      badge: badges[Math.floor(Math.random()*badges.length)],
+      rating: (3.5+Math.random()*1.5).toFixed(1),
+      reviews: Math.floor(Math.random()*2000+50)
+    });
+  }
+  return all;
+}
+
+const ALL_PRODUCTS = generateProducts();
+
+function formatEuro(n) {
+  return '€' + n.toFixed(2).replace('.',',');
+}
+
+function renderCategories() {
+  const grid = document.getElementById('categoriesGrid');
+  grid.innerHTML = categories.slice(0,50).map(c => `
+    <div class="cat-card" onclick="filterByCategory('${c.name}')">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.count} prodotti</div>
+    </div>
+  `).join('');
+}
+
+function renderNav() {
+  const nav = document.getElementById('categoryNav');
+  const topCats = ['Tutti','Elettronica','Moda','Bellezza','Casa','Sport','Alimentari','Libri','Gaming','Auto','Animali','Giocattoli'];
+  nav.innerHTML = topCats.map((c,i) => `
+    <div class="nav-item${i===0?' active':''}" onclick="navClick(this,'${c}')">${c}</div>
+  `).join('');
+}
+
+function renderFilterBar() {
+  const bar = document.getElementById('filterBar');
+  const filters = ['Tutti','In Offerta','Novità','Bestseller','< €20','€20-€100','€100-€500','> €500'];
+  bar.innerHTML = filters.map((f,i) => `
+    <button class="filter-btn${i===0?' active':''}" onclick="filterClick(this,'${f}')">${f}</button>
+  `).join('');
+}
+
+let currentFilter = 'Tutti';
+let currentCat = 'Tutti';
+let searchTerm = '';
+
+function getFilteredProducts() {
+  let prods = ALL_PRODUCTS;
+  if (searchTerm) {
+    prods = prods.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.cat.toLowerCase().includes(searchTerm.toLowerCase()));
+  }
+  if (currentCat !== 'Tutti') {
+    const catMap = {
+      'Elettronica': ['Smartphone','Laptop','Audio','TV & Display','Gaming','Fotografia','Smartwatch'],
+      'Moda': ['Abbigliamento','Scarpe','Borse'],
+      'Bellezza': ['Bellezza','Cura Persona'],
+      'Casa': ['Arredamento','Cucina','Smart Home'],
+      'Sport': ['Sport','Fitness'],
+      'Alimentari': ['Alimentari','Vini & Spirits'],
+      'Gaming': ['Gaming'],
+      'Auto': ['Auto'],
+      'Animali': ['Animali'],
+      'Giocattoli': ['Giocattoli'],
+      'Libri': ['Libri'],
+    };
+    const cats = catMap[currentCat] || [];
+    if (cats.length) prods = prods.filter(p => cats.includes(p.cat));
+  }
+  if (currentFilter === 'In Offerta') prods = prods.filter(p => p.badge === 'sale' || p.oldPrice);
+  else if (currentFilter === 'Novità') prods = prods.filter(p => p.badge === 'new');
+  else if (currentFilter === 'Bestseller') prods = prods.filter(p => p.badge === 'hot');
+  else if (currentFilter === '< €20') prods = prods.filter(p => p.price < 20);
+  else if (currentFilter === '€20-€100') prods = prods.filter(p => p.price >= 20 && p.price < 100);
+  else if (currentFilter === '€100-€500') prods = prods.filter(p => p.price >= 100 && p.price < 500);
+  else if (currentFilter === '> €500') prods = prods.filter(p => p.price >= 500);
+  return prods;
+}
+
+function renderProducts(reset=true) {
+  if (reset) { page = 0; displayedProducts = []; }
+  const filtered = getFilteredProducts();
+  const slice = filtered.slice(page*PRODUCTS_PER_PAGE, (page+1)*PRODUCTS_PER_PAGE);
+  displayedProducts = reset ? slice : [...displayedProducts, ...slice];
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = displayedProducts.map(p => `
+    <div class="product-card" onclick="quickView(${p.id})">
+      <div class="product-img">
+        ${p.badge ? `<span class="badge badge-${p.badge}">${p.badge==='sale'?'SCONTO':p.badge==='new'?'NUOVO':'HOT🔥'}</span>` : ''}
+        ${p.icon}
+      </div>
+      <div class="product-info">
+        <div class="product-category">${p.cat}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-rating">
+          <span class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}</span>
+          <span class="rating-count">${p.rating} (${p.reviews.toLocaleString('it')})</span>
+        </div>
+        <div class="product-price-row">
+          <div>
+            <div class="price">${formatEuro(p.price)}</div>
+            ${p.oldPrice ? `<div class="price-old">${formatEuro(p.oldPrice)}</div>` : ''}
+          </div>
+          <button class="add-btn" onclick="addToCart(event,${p.id})">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadMoreProducts() {
+  page++;
+  const filtered = getFilteredProducts();
+  if (page*PRODUCTS_PER_PAGE >= filtered.length) { showToast('Hai visto tutti i prodotti! 🎉'); return; }
+  renderProducts(false);
+}
+
+function navClick(el, cat) {
+  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  currentCat = cat;
+  renderProducts();
+}
+
+function filterClick(el, filter) {
+  document.querySelectorAll('.filter-btn').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = filter;
+  renderProducts();
+}
+
+function filterByCategory(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+  renderProducts();
+  document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'});
+}
+
+function handleSearch() {
+  searchTerm = document.getElementById('searchInput').value;
+  renderProducts();
+}
+
+function addToCart(e, id) {
+  e.stopPropagation();
+  const product = ALL_PRODUCTS.find(p => p.id === id);
+  const existing = cart.find(i => i.id === id);
+  if (existing) existing.qty++;
+  else cart.push({...product, qty:1});
+  updateCartCount();
+  showToast(`✅ "${product.name}" aggiunto al carrello!`);
+}
+
+function updateCartCount() {
+  const total = cart.reduce((s,i) => s+i.qty, 0);
+  document.getElementById('cartCount').textContent = total;
+}
+
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  renderCartPanel();
+}
+
+function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+function closeCartOutside(e) { if(e.target === document.getElementById('cartOverlay')) closeCart(); }
+
+function renderCartPanel() {
+  const container = document.getElementById('cartItems');
+  const totalEl = document.getElementById('cartTotal');
+  const note = document.getElementById('cartNote');
+  const btn = document.getElementById('checkoutBtn');
+  if (!cart.length) {
+    container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:3rem 0">Il carrello è vuoto.<br>Aggiungi qualcosa! 🛍️</p>';
+    totalEl.style.display = 'none'; note.style.display = 'none'; btn.style.display = 'none';
+    return;
+  }
+  container.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img">${item.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${formatEuro(item.price)}</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+        <span>${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+      </div>
+    </div>
+  `).join('');
+  const total = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  document.getElementById('totalPrice').textContent = formatEuro(total);
+  totalEl.style.display = 'flex'; note.style.display = 'block'; btn.style.display = 'block';
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  updateCartCount();
+  renderCartPanel();
+}
+
+function checkout() {
+  const total = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  showToast(`💳 Reindirizzamento al pagamento sicuro: ${formatEuro(total)}`);
+  setTimeout(() => {
+    alert(`🔒 Pagamento Sicuro ItalMart\n\nTotale: ${formatEuro(total)}\nValuta: € Euro (EUR)\n\nMetodi disponibili:\n• Visa / Mastercard\n• PayPal\n• Apple Pay / Google Pay\n• Bonifico Bancario\n• Klarna (Rate)\n\n[Questo è un sito dimostrativo]`);
+  }, 500);
+}
+
+function quickView(id) {
+  const p = ALL_PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  showToast(`👁️ ${p.name} — ${formatEuro(p.price)}`);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function showAllCategories() { showToast('📦 Mostrando tutte le 100+ categorie...'); }
+function showAllProducts() { showToast('🛍️ Caricamento di tutti i 1.500+ prodotti...'); renderProducts(); }
+
+// INIT
+renderNav();
+renderCategories();
+renderFilterBar();
+renderProducts();
+</script>
+</body>
+</html>
